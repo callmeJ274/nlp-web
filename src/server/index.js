@@ -6,6 +6,7 @@ require('dotenv').config()
 
 
 const formdata = new FormData();
+const bodyParser = require('body-parser');
 const app = express()
 /* Middleware*/
 //Here we are configuring express to use body-parser as middle-ware.
