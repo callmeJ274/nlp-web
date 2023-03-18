@@ -1,11 +1,11 @@
 var path = require('path')
 const express = require('express')
 const mockAPIResponse = require('./mockAPI.js')
+const FormData = require('form-data');
 require('dotenv').config()
-//console.log(`${process.env.API_ID}`)
+console.log(`${process.env.KEY}`)
 
 
-const formdata = new FormData();
 const bodyParser = require('body-parser');
 const app = express()
 /* Middleware*/
@@ -23,28 +23,37 @@ app.get('/', function (req, res) {
 })
 
 // designates what port the app will listen to for incoming requests
-app.listen(8080, function () {
-    console.log('Example app listening on port 8080!')
+app.listen(7012, function () {
+    console.log('Example app listening on port 7012!')
 })
 
 
-app.post('/testing', async (req, res, next) => {
+app.post('/api_call', async (req, res, next) => {
     console.log(req.body);
-        formdata.append("key", `${process.env.KEY}`);
-        formdata.append("txt", req.body.theText);
-        formdata.append("lang", "en"); 
-        const requestOptions = {
-            method: 'POST',
-            body: formdata,
-            redirect: 'follow'
-          };
-        const response = fetch("https://api.meaningcloud.com/sentiment-2.1", requestOptions)
-        .then(response => ({
-            status: response.status, 
-            body: response.json()
-        }))
-        .then(({ status, body }) => {console.log(status, body);res.send(response);})
-        .catch(error => {console.log('error', error) ;return next(error)})
+    const formdata = new FormData();
+	formdata.append("key", `${process.env.KEY}`);
+	formdata.append("txt", "YOUR TEXT HERE");
+	formdata.append("lang", "en");  // 2-letter code, like en es fr ...
+
+	const requestOptions = {
+	method: 'POST',
+	body: formdata,
+	redirect: 'follow'
+	};
+
+	const response = await fetch("https://api.meaningcloud.com/sentiment-2.1",requestOptions)
+	try {
+				const allData = await response.json();
+				if (allData.message) {
+					alert(allData.message);
+				} else {
+                    console.log(allData)
+					return allData.subjectivity;
+				}
+			} catch (error) {
+				console.log("error", error);
+				alert(error)
+			}
     })
 
 
