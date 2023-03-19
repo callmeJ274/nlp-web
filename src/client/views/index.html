@@ -8,42 +8,40 @@
     <body>
 
         <header>
-            <div class="">
+            <h1>
                 NLP EVALUATION
-            </div>
-            <div class="">
-                Nagivation Bar
-            </div>
+            </h1>
         </header>
 
         <main>
             <section>
                 <form class="" onsubmit="return client.handleSubmit(event)">
-                    <input id="input_text" type="text" name="input" value="" placeholder="Input Article Content">
+                    <input id="input_url" type="text" name="input" onblur="onBlur()" value="" placeholder="Input Article URL">
                     <input type="submit" name="" value="submit" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
                 </form>
             </section>
 
             <section>
-                <strong>Is Objective or Subjective:</strong>
-                <div id="results"></div>
+                <strong>Article validation:</strong>
+                <div id="agreement"></div>
+                <div id="subjectivity"></div>
+                <div id="irony"></div>
+                <div id="score_tag"></div>
+                <div id="confidence"></div>
             </section>
         </main>
 
         <footer>
-            <p>This is a footer</p>
+            <p>Udacity Front-End development project</p>
         </footer>
         <script>
-            // Check service workers are supported
+            // Check that service workers are supported
             if ('serviceWorker' in navigator) {
+                // Use the window load event to keep the page load performant
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/service-worker.js').then(registration =>{
-                        console.log('Service Working registered successfuly: ', registration);
-                    });
+                    navigator.serviceWorker.register('/service-worker.js');
                 });
-                }else{
-                console.log("Service Working is not supported");
-                    }
+            }
         </script>
     </body>
 </html>
